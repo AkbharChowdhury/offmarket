@@ -47,4 +47,22 @@ SIMILAR TO
 SELECT name, pounds(cost) 
 FROM items 
 WHERE to_tsvector(name) @@ to_tsquery('(baby ) &  (!coat)');
+-- subquery 
+-- find the items greater than the average price of products
+
+
+
+WITH seller_details AS (
+   SELECT 
+		CONCAT (c.firstname, ' ', c.lastname) seller,
+		COUNT(i.item_id) item_count
+	FROM items i
+	JOIN customers c ON c.customer_id = i.seller_id
+	GROUP BY seller 
+	HAVING COUNT(i.item_id) <3
+)
+
+SELECT seller, item_count
+FROM seller_details
+ORDER BY seller, item_count 
 
