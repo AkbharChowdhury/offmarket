@@ -58,10 +58,8 @@ SELECT
 		seller_id
 	FROM items i
 	JOIN customers c ON c.customer_id = i.seller_id
-	GROUP BY seller 
-	ORDER BY seller, item_count 
-)
-SELECT * FROM seller_details;
+	GROUP BY seller, seller_id 
+	ORDER BY seller, item_count;
 
 -- find items less than the average price of all products
 WITH avg_items_cost AS (SELECT AVG(cost) avg_cost FROM items)
