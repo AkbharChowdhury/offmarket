@@ -51,10 +51,11 @@ WHERE to_tsvector(name) @@ to_tsquery('(baby ) &  (!coat)');
 -- find the items greater than the average price of products
 
 -- find the total number of listing per seller
-WITH seller_details AS (
-   SELECT 
+CREATE OR REPLACE VIEW  seller_items_count AS 
+SELECT 
 		CONCAT (firstname, ' ',lastname) seller,
-		COUNT(item_id) item_count
+		COUNT(item_id) item_count,
+		seller_id
 	FROM items i
 	JOIN customers c ON c.customer_id = i.seller_id
 	GROUP BY seller 
@@ -110,5 +111,18 @@ LANGUAGE sql;
 SELECT * FROM seller_below_avg_items(24); 
 SELECT * FROM seller_statistics(24);
 
+-- show sellers listing
+CREATE OR REPLACE FUNCTION seller_listing(sellers_id INTEGER)
+RETURNS setof items AS
+$body$
+
+ SELECT *
+ FROM items 
+ WHERE seller_id = sellers_id 
+ ORDER BY name
+$body$
+LANGUAGE sql;
+-- example
+select (seller_listing(19)).*;
 
 
