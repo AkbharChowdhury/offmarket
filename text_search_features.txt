@@ -1,0 +1,1 @@
+https://docs.vultr.com/how-to-perform-fulltext-search-on-a-postgresql-database
